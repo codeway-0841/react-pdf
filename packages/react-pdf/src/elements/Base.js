@@ -159,6 +159,14 @@ class Base {
     };
   }
 
+  getWidth() {
+    return this.layout.getComputedWidth();
+  }
+
+  getHeight() {
+    return this.layout.getComputedHeight();
+  }
+
   drawBackgroundColor() {
     const { left, top, width, height } = this.getAbsoluteLayout();
     const { backgroundColor } = this.style;
@@ -171,9 +179,9 @@ class Base {
     }
   }
 
-  async renderChildren() {
+  async renderChildren(page) {
     for (let i = 0; i < this.children.length; i++) {
-      await this.children[i].render();
+      await this.children[i].render(page);
     }
   }
 }

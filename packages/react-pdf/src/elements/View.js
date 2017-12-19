@@ -5,11 +5,11 @@ class View extends Base {
     style: {},
   };
 
-  async render() {
+  async render(page) {
     this.drawBackgroundColor();
     this.drawBorders();
 
-    await this.renderChildren();
+    await this.renderChildren(page);
   }
 }
 
