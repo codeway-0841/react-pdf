@@ -119,18 +119,6 @@ class Text extends Base {
     this.layout.markDirty();
   }
 
-  // wrapElement() {
-  //   const parentWidth = this.parent.getWidth();
-  //
-  //   this.children = chunkStringIntoPages(
-  //     this.getRawValue(),
-  //     this.parent.getHeight(),
-  //     line => this.root.heightOfString(line, { width: parentWidth }),
-  //   );
-  //
-  //   return this.children.length;
-  // }
-
   async renderText(text) {
     const { textAlign = 'left', align, textDecoration } = this.style;
 
