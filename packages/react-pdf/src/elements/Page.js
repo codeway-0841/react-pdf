@@ -1,7 +1,9 @@
-import Base from './Base';
-import sizes from '../utils/pageSizes';
+import SubPage from './SubPage';
 
-class Page extends Base {
+class Page {
+  parent = null;
+  children = [];
+
   static defaultProps = {
     size: 'A4',
     orientation: 'portrait',
@@ -10,76 +12,55 @@ class Page extends Base {
   };
 
   constructor(root, props) {
-    super(root, props);
-
+    this.root = root;
+    this.props = { ...Page.defaultProps, ...props };
+    this.subpages = [];
     this.currentSubPage = 0;
+
+    this.addInitialSubpage();
   }
 
-  getSize() {
-    const { size } = this.props;
+  addInitialSubpage() {
+    const newSubpage = new SubPage(this.root, this.props);
 
-    if (typeof size === 'string') {
-      return sizes[size];
-    } else if (Array.isArray(size)) {
-      return size;
-    } else if (typeof size === 'object' && size.width && size.height) {
-      return [size.width, size.height];
-    } else {
-      throw new Error(`Invalid Page size: ${size}`);
+    newSubpage.parent = this;
+
+    this.subpages.push(newSubpage);
+  }
+
+  addNewSubpage(index) {
+    if (this.subpages.length < index) {
+      const originalSubpage = this.subpages[0];
+      const newSubpage = new SubPage(this.root, this.props);
+
+      newSubpage.parent = this;
+      newSubpage.layout = originalSubpage.layout;
+      newSubpage.children = originalSubpage.children;
+
+      this.subpages.push(newSubpage);
     }
   }
 
-  applyProps(props) {
-    super.applyProps(props);
-
-    if (props.size) {
-      const size = this.getSize();
-
-      if (props.orientation === 'landscape') {
-        this.layout.setWidth(size[1]);
-        this.layout.setHeight(size[0]);
-      } else {
-        this.layout.setHeight(size[1]);
-        this.layout.setWidth(size[0]);
-      }
-    }
+  appendChild(child) {
+    this.subpages[0].appendChild(child);
   }
 
-  wrapPage() {
-    // Since Text needs it's parent layout,
-    // we need to calculate flexbox layout for a first time.
-    this.layout.calculateLayout();
+  removeChild(child) {
+    this.subpages[0].removeChild(child);
+  }
 
-    const pagesNeeded = this.children.reduce((acc, child) => {
-      return Math.max(acc, child.wrapElement ? child.wrapElement() : 1);
-    }, 1);
+  getWidth() {
+    return this.subpages[0].getWidth();
+  }
 
-    return new Array(pagesNeeded).fill(this);
+  getHeight() {
+    return this.subpages[0].getHeight();
   }
 
   async render() {
-    const { orientation } = this.props;
-
-    // Ask each children to recalculate it's layout.
-    // This puts all Text nodes in a dirty state
-    await this.recalculateLayout();
-
-    // Finally, calculate flexbox's layout
-    // one more time based new widths and heights.
-    this.layout.calculateLayout();
-
-    this.root.addPage({ size: this.getSize(), layout: orientation, margin: 0 });
-
-    if (this.style.backgroundColor) {
-      this.root
-        .fillColor(this.style.backgroundColor)
-        .rect(0, 0, this.root.page.width, this.root.page.height)
-        .fill();
+    for (let i = 0; i < this.subpages.length; i++) {
+      await this.subpages[i].render(this);
     }
-
-    await this.renderChildren(this);
-
-    this.currentSubPage++;
   }
 }
 
