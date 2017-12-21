@@ -24,7 +24,6 @@ class Base {
 
     this.style = StyleSheet.resolve(this.props.style);
     this.layout = Yoga.Node.createDefault();
-    this.currentSubPage = 0;
 
     if (this.props) {
       this.applyProps(this.props);
@@ -206,7 +205,7 @@ class Base {
 
         availableHeight -= childHeight;
       } else {
-        page.addNewSubpage(++this.currentSubPage);
+        page.addNewSubpage();
         break;
       }
     }
