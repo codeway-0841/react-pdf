@@ -3,7 +3,6 @@ import isNan from 'lodash.isnan';
 import upperFirst from 'lodash.upperfirst';
 import warning from 'fbjs/lib/warning';
 import Base from './Base';
-import { chunkStringIntoPages } from '../utils/wrapping';
 
 class Text extends Base {
   width = null;
