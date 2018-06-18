@@ -16,12 +16,15 @@
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "build:watch": "babel ./src --out-dir ./lib --watch",
-    "build:clean": "rimraf ./lib"
+    "build:clean": "rimraf ./lib",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@react-pdf/core": "^0.6.3",
     "prop-types": "^15.6.0",
-    "lodash.omit": "^4.5.0"
+    "lodash.omit": "^4.5.0",
+    "snyk": "^1.83.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
@@ -29,5 +32,6 @@
   },
   "peerDependencies": {
     "react-dom": "^16.0.0"
-  }
+  },
+  "snyk": true
 }
