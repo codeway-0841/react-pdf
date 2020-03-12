@@ -10,8 +10,8 @@
     "logo": "https://opencollective.com/opencollective/logo.txt"
   },
   "dependencies": {
-    "jest": "^20.0.4",
-    "lerna": "2.7.1",
+    "jest": "^24.0.0",
+    "lerna": "3.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
