@@ -13,7 +13,8 @@
     "jest": "^20.0.4",
     "lerna": "2.7.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -37,12 +38,13 @@
     "build": "yarn run build:clean && lerna run build --ignore @react-pdf/example-*",
     "build:watch": "lerna run build:watch --concurrency=1000 --stream --ignore @react-pdf/examples",
     "build:clean": "lerna run build:clean",
-    "prepublish": "yarn run build",
+    "prepublish": "yarn run snyk-protect && yarn run build",
     "postinstall": "lerna bootstrap",
     "example": "babel-node ./examples/index.js",
     "precommit": "git add . && lint-staged",
     "lint": "eslint performance src",
-    "test": "jest --config .jestrc"
+    "test": "jest --config .jestrc",
+    "snyk-protect": "snyk protect"
   },
   "lint-staged": {
     "*.js": [
@@ -50,5 +52,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "snyk": true
 }
