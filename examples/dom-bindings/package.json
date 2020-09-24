@@ -8,9 +8,9 @@
   "dependencies": {
     "@react-pdf/core": "../../packages/react-pdf",
     "@react-pdf/dom": "../../packages/react-pdf-dom",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "regenerator-runtime": "^0.11.1"
   },
   "devDependencies": {
